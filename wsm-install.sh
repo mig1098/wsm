@@ -51,7 +51,7 @@ systemctl enable mariadb
 systemctl enable httpd
 systemctl enable vsftpd
 
-echo "Let's Encrypt installation
+echo "Let's Encrypt installation"
 yum install git -y
 git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
 
