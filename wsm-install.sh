@@ -17,6 +17,9 @@ echo "Done !"
 echo "LAMP Instalation"
 ##Installation Apache,PHP,MySQL
 yum install httpd php php-mysql php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap mariadb-server -y
+
+echo "NameVirtualHost *:80" >> /etc/httpd/conf/httpd.conf
+
 echo "Done"
 ##Launch http and MariaDB
 systemctl start mariadb
@@ -47,6 +50,12 @@ systemctl start vsftpd
 systemctl enable mariadb
 systemctl enable httpd
 systemctl enable vsftpd
+
+echo "Let's Encrypt installation
+yum install git -y
+git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
+
+echo "Done !"
 
 echo "#############################################"
 echo "#######Web Server management installation####"

@@ -9,59 +9,18 @@ echo ""
 echo "What you want to do?"
 echo " "
 
-echo "1. Install LAMP Stack and VsFTPd"
-echo "2. Install Lets's Encrypt"
-echo "3. Create new user with virtualhost and database"
-echo "4. Create SSL VirtualHost with Let's encrypt"
-echo "5. Delete an user"
-echo "6. Restart services"
+echo "1. Create User"
+echo "2. Create Domain"
+echo "3. Create SSL Domain"
+echo "4. Delete User"
+echo "5. Delete Domain"
+echo "6. Delete SSL Domain"
 echo "7. Exit"
 read choice
 
 case $choice in
 
 	1)
-	##CentOS
-	##MAj des paquets
-	yum update -y
-
-	##Installation Apache,PHP,MySQL,VsFTPD
-	yum install httpd php php-mysql php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap mariadb-server vsftpd -y
-
-	##Launch http and MariaDB
-	systemctl start mariadb
-	systemctl start httpd
-
-	#Configuration de MariaDB
-	mysql_secure_installation <<EOF
-
-y
-root
-root
-y
-y
-y
-y
-EOF
-	
-	#Configure VsFTPd
-	echo 'chroot_local_user=YES
-user_sub_token=$USER
-local_root=/home/$USER/www' >> /etc/vsftpd/vsftpd.conf
-	systemctl start vsftpd
-
-	#Start the services on boot
-	systemctl enable mariadb
-	systemctl enable httpd
-	systemctl enable vsftpd
-	;;
-
-	2)
-	yum install git -y
-	git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
-	;;
-	
-	3)
 	echo "Username: "
 	read user
 	echo "Password: "
@@ -78,38 +37,23 @@ local_root=/home/$USER/www' >> /etc/vsftpd/vsftpd.conf
 	echo $pass | passwd --stdin $user
 
 	##Création de son dossier www
-	mkdir -p /home/$user/www
+	mkdir /home/$user/www
 	chmod -R 755 /home/$user
+	usermod -a -G apache $user
+	chown -R $user. /home/$user/www
+	chgrp -R apache /home/$user/www
+	
 
-	##VirtualHost setup
-
-	echo "<VirtualHost *:80>
-ServerAdmin $mail
-DocumentRoot /home/$user/www/
-ServerName $domain
-DirectoryIndex index.html index.php
-
-	<Directory /home/$user/www/>
-		Options Indexes FollowSymLinks MultiViews
-		AllowOverride None
-		Order allow,deny
-		allow from all
-	</Directory>
-
-	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-	    	
-	<Directory "/usr/lib/cgi-bin">
-		AllowOverride None
-		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-		Order allow,deny
-		Allow from all
-	</Directory>
-</VirtualHost>" > /etc/httpd/conf.d/$user.conf
 
 	##Database setup
 	dbname="$user"_db
 	mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS $dbname;GRANT ALL PRIVILEGES ON $dbname.* TO $user@localhost IDENTIFIED BY '$pass';FLUSH PRIVILEGES;"
 	;;
+	
+	2)
+	
+	3)
+	
 
 	4)
 	echo "Username: "
