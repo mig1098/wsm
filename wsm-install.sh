@@ -2,6 +2,8 @@
 ##denisrosenkranz.com##
 ##Web Server Management Install##
 
+WSM=/opt/wsm
+
 echo "#############################################"
 echo "########Web Server management installation#########"
 echo "#############################################"
@@ -24,6 +26,8 @@ echo "Install PHPMyadmin"
 wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -i epel-release-7-1.noarch.rpm -y
 yum install phpmyadmin -y
+
+cp $WSM/templates/phpMyAdmin.conf /etc/httpd/conf.d/phpMyAdmin.conf
 
 echo "Done"
 ##Launch http and MariaDB
