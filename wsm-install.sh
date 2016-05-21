@@ -16,9 +16,14 @@ echo "Done !"
 
 echo "LAMP Instalation"
 ##Installation Apache,PHP,MySQL
-yum install httpd php php-mysql php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap mariadb-server -y
+yum install httpd php php-mysql php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap mariadb-server wget -y
 
 echo "NameVirtualHost *:80" >> /etc/httpd/conf/httpd.conf
+
+echo "Install PHPMyadmin"
+wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -i epel-release-7-1.noarch.rpm -y
+yum install phpmyadmin -y
 
 echo "Done"
 ##Launch http and MariaDB
