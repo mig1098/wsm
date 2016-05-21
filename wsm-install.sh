@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 ##denisrosenkranz.com##
 ##Web Server Management Install##
 
@@ -9,7 +9,7 @@ echo "########Web Server management installation#########"
 echo "#############################################"
 echo ""
 echo ""
-git
+
 ##CentOS
 ##MAj des paquets
 echo "update Centos"
